@@ -1,5 +1,8 @@
 import '../../global.css';
 
+// Register widget layout for iOS home screen widget (expo-widgets)
+import '@/widgets/MudomudoWidget';
+
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import React from 'react';
 import { useColorScheme } from 'react-native';

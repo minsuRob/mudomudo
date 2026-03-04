@@ -8,6 +8,7 @@
     "scheme": "mudomudo",
     "userInterfaceStyle": "automatic",
     "ios": {
+      "bundleIdentifier": "dev.mudomudo.app",
       "icon": "./assets/expo.icon"
     },
     "android": {
@@ -33,6 +34,19 @@
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 76
           }
+        }
+      ],
+      [
+        "expo-widgets",
+        {
+          "widgets": [
+            {
+              "name": "MudomudoWidget",
+              "displayName": "Mudomudo",
+              "description": "Home과 Explore 요약을 한눈에",
+              "supportedFamilies": ["systemSmall", "systemMedium", "systemLarge"]
+            }
+          ]
         }
       ]
     ],
