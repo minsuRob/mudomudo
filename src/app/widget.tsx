@@ -1,14 +1,16 @@
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import MudomudoWidget from '@/widgets/MudomudoWidget';
-
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
+const isIOS = Platform.OS === 'ios';
+
 export default function WidgetScreen() {
   const handleUpdateWidget = () => {
+    if (!isIOS) return;
+    const MudomudoWidget = require('@/widgets/MudomudoWidget').default;
     const now = new Date();
     const timeStr = now.toLocaleTimeString(undefined, {
       hour: '2-digit',
@@ -34,7 +36,7 @@ export default function WidgetScreen() {
             Home과 Explore 요약을 홈 화면 위젯으로 표시합니다. (iOS 전용)
           </ThemedText>
 
-          {Platform.OS === 'ios' ? (
+          {isIOS ? (
             <>
               <ThemedText type="small" style={styles.hint} themeColor="textSecondary">
                 홈 화면에서 위젯을 추가한 뒤, 아래 버튼으로 내용을 갱신하세요.
@@ -48,9 +50,14 @@ export default function WidgetScreen() {
               </Pressable>
             </>
           ) : (
-            <ThemedText type="small" themeColor="textSecondary">
-              iOS 개발 빌드에서 위젯을 사용할 수 있습니다.
-            </ThemedText>
+            <ThemedView type="backgroundElement" style={styles.webPlaceholder}>
+              <ThemedText type="small" themeColor="textSecondary" style={styles.webPlaceholderText}>
+                위젯은 iOS에서만 사용할 수 있습니다.
+              </ThemedText>
+              <ThemedText type="small" themeColor="textSecondary" style={styles.webPlaceholderSub}>
+                iOS 기기 또는 시뮬레이터에서 앱을 실행하면 위젯 갱신 버튼을 사용할 수 있습니다.
+              </ThemedText>
+            </ThemedView>
           )}
         </ThemedView>
       </SafeAreaView>
@@ -95,5 +102,17 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.two,
     paddingHorizontal: Spacing.four,
     borderRadius: Spacing.three,
+  },
+  webPlaceholder: {
+    marginTop: Spacing.two,
+    padding: Spacing.four,
+    borderRadius: Spacing.three,
+    gap: Spacing.two,
+  },
+  webPlaceholderText: {
+    fontWeight: '600',
+  },
+  webPlaceholderSub: {
+    opacity: 0.9,
   },
 });
