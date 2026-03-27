@@ -1,4 +1,5 @@
 import '@/global.css';
+import '@/widgets';
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import React from 'react';

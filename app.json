@@ -46,6 +46,12 @@
               "displayName": "Mudomudo",
               "description": "Mudomudo home screen widget",
               "supportedFamilies": ["systemSmall", "systemMedium", "systemLarge"]
+            },
+            {
+              "name": "CoffeeCounter",
+              "displayName": "Coffee counter",
+              "description": "Tap + to increment from the home screen",
+              "supportedFamilies": ["systemSmall", "systemMedium", "systemLarge"]
             }
           ]
         }
