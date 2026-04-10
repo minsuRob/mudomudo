@@ -41,6 +41,13 @@
           }
         }
       ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "할 일에 작은 썸네일을 붙이기 위해 사진에 접근합니다.",
+          "cameraPermission": "할 일에 작은 썸네일을 붙이기 위해 카메라에 접근합니다."
+        }
+      ],
       "@bacons/apple-targets"
     ],
     "experiments": {

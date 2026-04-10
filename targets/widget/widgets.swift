@@ -1,5 +1,6 @@
 import WidgetKit
 import SwiftUI
+import UIKit
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
@@ -36,41 +37,46 @@ struct SimpleEntry: TimelineEntry {
 
 struct TodoItem: Codable {
   let id: String
-  let title: String;
-  let completed: Bool;
+  let title: String
+  let completed: Bool
+  let thumbBase64: String?
 }
-
-var mockData: [TodoItem] = [
-  TodoItem(id: "1", title: "Wash the car", completed: false),
-  TodoItem(id: "2", title: "Walk the dog", completed: false),
-  TodoItem(id: "3", title: "Go for a run", completed: true)
-]
 
 struct widgetEntryView : View {
   var entry: Provider.Entry
   
   var body: some View {
-    
     let defaults = UserDefaults(suiteName: "group.com.mudomudo.app")
     let todos = (
       (defaults?.data(forKey: "widget_todos"))
         .flatMap { try? JSONDecoder().decode([TodoItem].self, from: $0) }
     ) ?? []
+    /// 가장 최근에 이미지가 붙은 할 일 하나만 표시 (목록 끝쪽이 최신)
+    let featured = todos.reversed().first { todo in
+      guard let b64 = todo.thumbBase64 else { return false }
+      return !b64.isEmpty
+    }
     
-    VStack(alignment: .leading, spacing: 12) {
-      if todos.isEmpty {
-        Text("No todos...")
-      }
-      ForEach(todos, id: \.id) { todo in
-        HStack {
-          if todo.completed {
-            Text("✅")
-          } else {
-            Text("❌")
-          }
-          Text(todo.title)
-            .font(.footnote)
+    Group {
+      if let todo = featured,
+         let b64 = todo.thumbBase64,
+         let data = Data(base64Encoded: b64),
+         let ui = UIImage(data: data) {
+        Image(uiImage: ui)
+          .resizable()
+          .scaledToFill()
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
+          .clipped()
+      } else {
+        ZStack {
+          Color(.secondarySystemFill)
+          Text("앱에서 할 일에\n사진을 붙여 주세요")
+            .multilineTextAlignment(.center)
+            .font(.caption2)
+            .foregroundStyle(.secondary)
+            .padding(12)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
       }
     }
   }
@@ -82,7 +88,9 @@ struct widget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             widgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .containerBackground(for: .widget) {
+                    Color.clear
+                }
         }
     }
 }
