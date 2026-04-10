@@ -9,9 +9,13 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "bundleIdentifier": "com.mudomudo.app",
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "entitlements": {
+        "com.apple.security.application-groups": ["group.com.mudomudo.app"]
+      }
     },
     "android": {
+      "package": "com.mudomudo.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -37,25 +41,7 @@
           }
         }
       ],
-      [
-        "expo-widgets",
-        {
-          "widgets": [
-            {
-              "name": "MudomudoWidget",
-              "displayName": "Mudomudo",
-              "description": "Mudomudo home screen widget",
-              "supportedFamilies": ["systemSmall", "systemMedium", "systemLarge"]
-            },
-            {
-              "name": "CoffeeCounter",
-              "displayName": "Coffee counter",
-              "description": "Tap + to increment from the home screen",
-              "supportedFamilies": ["systemSmall", "systemMedium", "systemLarge"]
-            }
-          ]
-        }
-      ]
+      "@bacons/apple-targets"
     ],
     "experiments": {
       "typedRoutes": true,
